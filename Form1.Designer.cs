@@ -29,21 +29,21 @@
         private void InitializeComponent()
         {
             this.btnClose = new System.Windows.Forms.Button();
-            this.tabIssue = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabQuery = new System.Windows.Forms.TabPage();
-            this.tabDeposit = new System.Windows.Forms.TabPage();
-            this.tabConsume = new System.Windows.Forms.TabPage();
-            this.memberId = new System.Windows.Forms.Label();
-            this.txtMemberId = new System.Windows.Forms.TextBox();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.txtDate = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.txtPoint = new System.Windows.Forms.Label();
-            this.btnMakeCard = new System.Windows.Forms.Button();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabIssue = new System.Windows.Forms.TabPage();
+            this.lblIssueStatus = new System.Windows.Forms.Label();
             this.btnClearCard = new System.Windows.Forms.Button();
+            this.btnMakeCard = new System.Windows.Forms.Button();
+            this.txtPoint = new System.Windows.Forms.TextBox();
+            this.lbl1Point = new System.Windows.Forms.Label();
+            this.txtDate = new System.Windows.Forms.TextBox();
+            this.lbl1Date = new System.Windows.Forms.Label();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.lbl1Name = new System.Windows.Forms.Label();
+            this.txtMemberId = new System.Windows.Forms.TextBox();
+            this.lbl1MemberId = new System.Windows.Forms.Label();
+            this.tabQuery = new System.Windows.Forms.TabPage();
+            this.lblQueryStatus = new System.Windows.Forms.Label();
             this.btnReadCard = new System.Windows.Forms.Button();
             this.txtQueryPoint = new System.Windows.Forms.TextBox();
             this.lblPoint = new System.Windows.Forms.Label();
@@ -53,18 +53,18 @@
             this.lblName = new System.Windows.Forms.Label();
             this.txtQueryMemberId = new System.Windows.Forms.TextBox();
             this.lblMemberId = new System.Windows.Forms.Label();
-            this.lblQueryStatus = new System.Windows.Forms.Label();
-            this.lblIssueStatus = new System.Windows.Forms.Label();
+            this.tabDeposit = new System.Windows.Forms.TabPage();
+            this.lblAddStatus = new System.Windows.Forms.Label();
+            this.btnAddValue = new System.Windows.Forms.Button();
             this.txtAddPoint = new System.Windows.Forms.TextBox();
             this.lblAddPoint = new System.Windows.Forms.Label();
-            this.btnAddValue = new System.Windows.Forms.Button();
-            this.lblAddStatus = new System.Windows.Forms.Label();
+            this.tabConsume = new System.Windows.Forms.TabPage();
             this.lblConsumeStatus = new System.Windows.Forms.Label();
             this.btnConsume = new System.Windows.Forms.Button();
             this.txtConsumePoint = new System.Windows.Forms.TextBox();
             this.lblConsumePoint = new System.Windows.Forms.Label();
+            this.tabControl.SuspendLayout();
             this.tabIssue.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.tabQuery.SuspendLayout();
             this.tabDeposit.SuspendLayout();
             this.tabConsume.SuspendLayout();
@@ -81,38 +81,133 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabIssue);
+            this.tabControl.Controls.Add(this.tabQuery);
+            this.tabControl.Controls.Add(this.tabDeposit);
+            this.tabControl.Controls.Add(this.tabConsume);
+            this.tabControl.Location = new System.Drawing.Point(12, 12);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(406, 301);
+            this.tabControl.TabIndex = 12;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
+            // 
             // tabIssue
             // 
-            this.tabIssue.Controls.Add(this.tabPage1);
-            this.tabIssue.Controls.Add(this.tabQuery);
-            this.tabIssue.Controls.Add(this.tabDeposit);
-            this.tabIssue.Controls.Add(this.tabConsume);
-            this.tabIssue.Location = new System.Drawing.Point(12, 12);
+            this.tabIssue.Controls.Add(this.lblIssueStatus);
+            this.tabIssue.Controls.Add(this.btnClearCard);
+            this.tabIssue.Controls.Add(this.btnMakeCard);
+            this.tabIssue.Controls.Add(this.txtPoint);
+            this.tabIssue.Controls.Add(this.lbl1Point);
+            this.tabIssue.Controls.Add(this.txtDate);
+            this.tabIssue.Controls.Add(this.lbl1Date);
+            this.tabIssue.Controls.Add(this.txtName);
+            this.tabIssue.Controls.Add(this.lbl1Name);
+            this.tabIssue.Controls.Add(this.txtMemberId);
+            this.tabIssue.Controls.Add(this.lbl1MemberId);
+            this.tabIssue.Location = new System.Drawing.Point(4, 25);
             this.tabIssue.Name = "tabIssue";
-            this.tabIssue.SelectedIndex = 0;
-            this.tabIssue.Size = new System.Drawing.Size(406, 301);
-            this.tabIssue.TabIndex = 12;
+            this.tabIssue.Padding = new System.Windows.Forms.Padding(3);
+            this.tabIssue.Size = new System.Drawing.Size(398, 272);
+            this.tabIssue.TabIndex = 0;
+            this.tabIssue.Text = "發卡";
+            this.tabIssue.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // lblIssueStatus
             // 
-            this.tabPage1.Controls.Add(this.lblIssueStatus);
-            this.tabPage1.Controls.Add(this.btnClearCard);
-            this.tabPage1.Controls.Add(this.btnMakeCard);
-            this.tabPage1.Controls.Add(this.textBox2);
-            this.tabPage1.Controls.Add(this.txtPoint);
-            this.tabPage1.Controls.Add(this.textBox1);
-            this.tabPage1.Controls.Add(this.txtDate);
-            this.tabPage1.Controls.Add(this.txtName);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.txtMemberId);
-            this.tabPage1.Controls.Add(this.memberId);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(398, 272);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "發卡";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.lblIssueStatus.AutoSize = true;
+            this.lblIssueStatus.ForeColor = System.Drawing.Color.Crimson;
+            this.lblIssueStatus.Location = new System.Drawing.Point(25, 234);
+            this.lblIssueStatus.Name = "lblIssueStatus";
+            this.lblIssueStatus.Size = new System.Drawing.Size(0, 15);
+            this.lblIssueStatus.TabIndex = 19;
+            // 
+            // btnClearCard
+            // 
+            this.btnClearCard.Location = new System.Drawing.Point(283, 121);
+            this.btnClearCard.Name = "btnClearCard";
+            this.btnClearCard.Size = new System.Drawing.Size(95, 23);
+            this.btnClearCard.TabIndex = 9;
+            this.btnClearCard.Text = "清空卡片";
+            this.btnClearCard.UseVisualStyleBackColor = true;
+            this.btnClearCard.Click += new System.EventHandler(this.btnClearCard_Click);
+            // 
+            // btnMakeCard
+            // 
+            this.btnMakeCard.Location = new System.Drawing.Point(283, 65);
+            this.btnMakeCard.Name = "btnMakeCard";
+            this.btnMakeCard.Size = new System.Drawing.Size(95, 23);
+            this.btnMakeCard.TabIndex = 8;
+            this.btnMakeCard.Text = "卡片製作";
+            this.btnMakeCard.UseVisualStyleBackColor = true;
+            this.btnMakeCard.Click += new System.EventHandler(this.btnMakeCard_Click);
+            // 
+            // txtPoint
+            // 
+            this.txtPoint.Location = new System.Drawing.Point(102, 174);
+            this.txtPoint.Name = "txtPoint";
+            this.txtPoint.Size = new System.Drawing.Size(157, 25);
+            this.txtPoint.TabIndex = 7;
+            this.txtPoint.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPoint_KeyPress);
+            // 
+            // lbl1Point
+            // 
+            this.lbl1Point.AutoSize = true;
+            this.lbl1Point.Location = new System.Drawing.Point(25, 184);
+            this.lbl1Point.Name = "lbl1Point";
+            this.lbl1Point.Size = new System.Drawing.Size(41, 15);
+            this.lbl1Point.TabIndex = 6;
+            this.lbl1Point.Text = "點數:";
+            // 
+            // txtDate
+            // 
+            this.txtDate.Location = new System.Drawing.Point(102, 115);
+            this.txtDate.Name = "txtDate";
+            this.txtDate.Size = new System.Drawing.Size(157, 25);
+            this.txtDate.TabIndex = 5;
+            // 
+            // lbl1Date
+            // 
+            this.lbl1Date.AutoSize = true;
+            this.lbl1Date.Location = new System.Drawing.Point(25, 125);
+            this.lbl1Date.Name = "lbl1Date";
+            this.lbl1Date.Size = new System.Drawing.Size(71, 15);
+            this.lbl1Date.TabIndex = 4;
+            this.lbl1Date.Text = "申請日期:";
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(102, 63);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(157, 25);
+            this.txtName.TabIndex = 3;
+            // 
+            // lbl1Name
+            // 
+            this.lbl1Name.AutoSize = true;
+            this.lbl1Name.Location = new System.Drawing.Point(25, 73);
+            this.lbl1Name.Name = "lbl1Name";
+            this.lbl1Name.Size = new System.Drawing.Size(41, 15);
+            this.lbl1Name.TabIndex = 2;
+            this.lbl1Name.Text = "姓名:";
+            // 
+            // txtMemberId
+            // 
+            this.txtMemberId.Location = new System.Drawing.Point(102, 20);
+            this.txtMemberId.Name = "txtMemberId";
+            this.txtMemberId.Size = new System.Drawing.Size(157, 25);
+            this.txtMemberId.TabIndex = 1;
+            // 
+            // lbl1MemberId
+            // 
+            this.lbl1MemberId.AutoSize = true;
+            this.lbl1MemberId.Location = new System.Drawing.Point(25, 30);
+            this.lbl1MemberId.Name = "lbl1MemberId";
+            this.lbl1MemberId.Size = new System.Drawing.Size(71, 15);
+            this.lbl1MemberId.TabIndex = 0;
+            this.lbl1MemberId.Text = "會員編號:";
             // 
             // tabQuery
             // 
@@ -134,116 +229,14 @@
             this.tabQuery.Text = "查詢";
             this.tabQuery.UseVisualStyleBackColor = true;
             // 
-            // tabDeposit
+            // lblQueryStatus
             // 
-            this.tabDeposit.Controls.Add(this.lblAddStatus);
-            this.tabDeposit.Controls.Add(this.btnAddValue);
-            this.tabDeposit.Controls.Add(this.txtAddPoint);
-            this.tabDeposit.Controls.Add(this.lblAddPoint);
-            this.tabDeposit.Location = new System.Drawing.Point(4, 25);
-            this.tabDeposit.Name = "tabDeposit";
-            this.tabDeposit.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDeposit.Size = new System.Drawing.Size(398, 272);
-            this.tabDeposit.TabIndex = 2;
-            this.tabDeposit.Text = "儲值";
-            this.tabDeposit.UseVisualStyleBackColor = true;
-            // 
-            // tabConsume
-            // 
-            this.tabConsume.Controls.Add(this.lblConsumeStatus);
-            this.tabConsume.Controls.Add(this.btnConsume);
-            this.tabConsume.Controls.Add(this.txtConsumePoint);
-            this.tabConsume.Controls.Add(this.lblConsumePoint);
-            this.tabConsume.Location = new System.Drawing.Point(4, 25);
-            this.tabConsume.Name = "tabConsume";
-            this.tabConsume.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConsume.Size = new System.Drawing.Size(398, 272);
-            this.tabConsume.TabIndex = 3;
-            this.tabConsume.Text = "消費";
-            this.tabConsume.UseVisualStyleBackColor = true;
-            // 
-            // memberId
-            // 
-            this.memberId.AutoSize = true;
-            this.memberId.Location = new System.Drawing.Point(25, 30);
-            this.memberId.Name = "memberId";
-            this.memberId.Size = new System.Drawing.Size(71, 15);
-            this.memberId.TabIndex = 0;
-            this.memberId.Text = "會員編號:";
-            this.memberId.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // txtMemberId
-            // 
-            this.txtMemberId.Location = new System.Drawing.Point(102, 20);
-            this.txtMemberId.Name = "txtMemberId";
-            this.txtMemberId.Size = new System.Drawing.Size(157, 25);
-            this.txtMemberId.TabIndex = 1;
-            // 
-            // txtName
-            // 
-            this.txtName.Location = new System.Drawing.Point(102, 63);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(157, 25);
-            this.txtName.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(25, 73);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "姓名:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(102, 115);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(157, 25);
-            this.textBox1.TabIndex = 5;
-            // 
-            // txtDate
-            // 
-            this.txtDate.AutoSize = true;
-            this.txtDate.Location = new System.Drawing.Point(25, 125);
-            this.txtDate.Name = "txtDate";
-            this.txtDate.Size = new System.Drawing.Size(71, 15);
-            this.txtDate.TabIndex = 4;
-            this.txtDate.Text = "申請日期:";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(102, 174);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(157, 25);
-            this.textBox2.TabIndex = 7;
-            // 
-            // txtPoint
-            // 
-            this.txtPoint.AutoSize = true;
-            this.txtPoint.Location = new System.Drawing.Point(25, 184);
-            this.txtPoint.Name = "txtPoint";
-            this.txtPoint.Size = new System.Drawing.Size(41, 15);
-            this.txtPoint.TabIndex = 6;
-            this.txtPoint.Text = "點數:";
-            // 
-            // btnMakeCard
-            // 
-            this.btnMakeCard.Location = new System.Drawing.Point(283, 65);
-            this.btnMakeCard.Name = "btnMakeCard";
-            this.btnMakeCard.Size = new System.Drawing.Size(95, 23);
-            this.btnMakeCard.TabIndex = 8;
-            this.btnMakeCard.Text = "卡片製作";
-            this.btnMakeCard.UseVisualStyleBackColor = true;
-            // 
-            // btnClearCard
-            // 
-            this.btnClearCard.Location = new System.Drawing.Point(283, 121);
-            this.btnClearCard.Name = "btnClearCard";
-            this.btnClearCard.Size = new System.Drawing.Size(95, 23);
-            this.btnClearCard.TabIndex = 9;
-            this.btnClearCard.Text = "清空卡片";
-            this.btnClearCard.UseVisualStyleBackColor = true;
+            this.lblQueryStatus.AutoSize = true;
+            this.lblQueryStatus.ForeColor = System.Drawing.Color.Red;
+            this.lblQueryStatus.Location = new System.Drawing.Point(23, 240);
+            this.lblQueryStatus.Name = "lblQueryStatus";
+            this.lblQueryStatus.Size = new System.Drawing.Size(0, 15);
+            this.lblQueryStatus.TabIndex = 18;
             // 
             // btnReadCard
             // 
@@ -253,6 +246,7 @@
             this.btnReadCard.TabIndex = 17;
             this.btnReadCard.Text = "讀取卡片";
             this.btnReadCard.UseVisualStyleBackColor = true;
+            this.btnReadCard.Click += new System.EventHandler(this.btnReadCard_Click);
             // 
             // txtQueryPoint
             // 
@@ -318,23 +312,37 @@
             this.lblMemberId.TabIndex = 9;
             this.lblMemberId.Text = "會員編號:";
             // 
-            // lblQueryStatus
+            // tabDeposit
             // 
-            this.lblQueryStatus.AutoSize = true;
-            this.lblQueryStatus.Location = new System.Drawing.Point(23, 240);
-            this.lblQueryStatus.Name = "lblQueryStatus";
-            this.lblQueryStatus.Size = new System.Drawing.Size(67, 15);
-            this.lblQueryStatus.TabIndex = 18;
-            this.lblQueryStatus.Text = "讀取完成";
+            this.tabDeposit.Controls.Add(this.lblAddStatus);
+            this.tabDeposit.Controls.Add(this.btnAddValue);
+            this.tabDeposit.Controls.Add(this.txtAddPoint);
+            this.tabDeposit.Controls.Add(this.lblAddPoint);
+            this.tabDeposit.Location = new System.Drawing.Point(4, 25);
+            this.tabDeposit.Name = "tabDeposit";
+            this.tabDeposit.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDeposit.Size = new System.Drawing.Size(398, 272);
+            this.tabDeposit.TabIndex = 2;
+            this.tabDeposit.Text = "儲值";
+            this.tabDeposit.UseVisualStyleBackColor = true;
             // 
-            // lblIssueStatus
+            // lblAddStatus
             // 
-            this.lblIssueStatus.AutoSize = true;
-            this.lblIssueStatus.Location = new System.Drawing.Point(25, 234);
-            this.lblIssueStatus.Name = "lblIssueStatus";
-            this.lblIssueStatus.Size = new System.Drawing.Size(67, 15);
-            this.lblIssueStatus.TabIndex = 19;
-            this.lblIssueStatus.Text = "寫入完成";
+            this.lblAddStatus.AutoSize = true;
+            this.lblAddStatus.Location = new System.Drawing.Point(26, 177);
+            this.lblAddStatus.Name = "lblAddStatus";
+            this.lblAddStatus.Size = new System.Drawing.Size(109, 15);
+            this.lblAddStatus.TabIndex = 19;
+            this.lblAddStatus.Text = "儲值: 可用餘額:";
+            // 
+            // btnAddValue
+            // 
+            this.btnAddValue.Location = new System.Drawing.Point(286, 96);
+            this.btnAddValue.Name = "btnAddValue";
+            this.btnAddValue.Size = new System.Drawing.Size(95, 23);
+            this.btnAddValue.TabIndex = 18;
+            this.btnAddValue.Text = "加值點數";
+            this.btnAddValue.UseVisualStyleBackColor = true;
             // 
             // txtAddPoint
             // 
@@ -352,24 +360,19 @@
             this.lblAddPoint.TabIndex = 2;
             this.lblAddPoint.Text = "點數:";
             // 
-            // btnAddValue
+            // tabConsume
             // 
-            this.btnAddValue.Location = new System.Drawing.Point(286, 96);
-            this.btnAddValue.Name = "btnAddValue";
-            this.btnAddValue.Size = new System.Drawing.Size(95, 23);
-            this.btnAddValue.TabIndex = 18;
-            this.btnAddValue.Text = "加值點數";
-            this.btnAddValue.UseVisualStyleBackColor = true;
-            // 
-            // lblAddStatus
-            // 
-            this.lblAddStatus.AutoSize = true;
-            this.lblAddStatus.Location = new System.Drawing.Point(26, 177);
-            this.lblAddStatus.Name = "lblAddStatus";
-            this.lblAddStatus.Size = new System.Drawing.Size(109, 15);
-            this.lblAddStatus.TabIndex = 19;
-            this.lblAddStatus.Text = "儲值: 可用餘額:";
-            this.lblAddStatus.Click += new System.EventHandler(this.label2_Click);
+            this.tabConsume.Controls.Add(this.lblConsumeStatus);
+            this.tabConsume.Controls.Add(this.btnConsume);
+            this.tabConsume.Controls.Add(this.txtConsumePoint);
+            this.tabConsume.Controls.Add(this.lblConsumePoint);
+            this.tabConsume.Location = new System.Drawing.Point(4, 25);
+            this.tabConsume.Name = "tabConsume";
+            this.tabConsume.Padding = new System.Windows.Forms.Padding(3);
+            this.tabConsume.Size = new System.Drawing.Size(398, 272);
+            this.tabConsume.TabIndex = 3;
+            this.tabConsume.Text = "消費";
+            this.tabConsume.UseVisualStyleBackColor = true;
             // 
             // lblConsumeStatus
             // 
@@ -410,15 +413,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(430, 372);
-            this.Controls.Add(this.tabIssue);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.btnClose);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "Form1";
             this.Text = "電子錢包";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.tabControl.ResumeLayout(false);
             this.tabIssue.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabIssue.PerformLayout();
             this.tabQuery.ResumeLayout(false);
             this.tabQuery.PerformLayout();
             this.tabDeposit.ResumeLayout(false);
@@ -431,18 +434,18 @@
 
         #endregion
         internal System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.TabControl tabIssue;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabIssue;
         private System.Windows.Forms.TabPage tabQuery;
         private System.Windows.Forms.TabPage tabDeposit;
         private System.Windows.Forms.TabPage tabConsume;
-        private System.Windows.Forms.Label memberId;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label txtPoint;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label txtDate;
+        private System.Windows.Forms.Label lbl1MemberId;
+        private System.Windows.Forms.TextBox txtPoint;
+        private System.Windows.Forms.Label lbl1Point;
+        private System.Windows.Forms.TextBox txtDate;
+        private System.Windows.Forms.Label lbl1Date;
         private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl1Name;
         private System.Windows.Forms.TextBox txtMemberId;
         private System.Windows.Forms.Button btnClearCard;
         private System.Windows.Forms.Button btnMakeCard;
