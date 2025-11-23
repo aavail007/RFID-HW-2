@@ -436,12 +436,99 @@ namespace WindowsFormsApplication6
             lblIssueStatus.Text = "清空完成";
         }
 
+
         // 16 bytes 全 0 的空資料
         private byte[] EmptyBlock()
         {
             return new byte[16]; // 預設即為 16 bytes 全 0
         }
 
+        #endregion
+
+        #region 儲值功能
+        private void btnAddValue_Click(object sender, EventArgs e)
+        {
+            lblAddStatus.Text = ""; // 清空舊訊息
+
+            // 1. 檢查輸入格式
+            if (!int.TryParse(txtAddPoint.Text, out int addValue) || addValue <= 0)
+            {
+                MessageBox.Show("請輸入有效的儲值點數！");
+                return;
+            }
+
+            byte keyType = 0x60; // KeyA
+            byte[] key = StringToByteArray("FFFFFFFFFFFF");
+
+            // 2. Step 1：讀取原本點數
+            int? oldValue = ReadValueBlock(keyType, key, 2, 8);
+            if (oldValue == null)
+            {
+                MessageBox.Show("讀取原始點數失敗！");
+                return;
+            }
+
+            // 3. 計算新點數
+            int newValue = oldValue.Value + addValue;
+
+            // 4. Step 2：寫回 Value Block
+            bool ok = WriteValueBlock(2, 8, newValue, keyType, key);
+            if (!ok)
+            {
+                MessageBox.Show("儲值失敗！");
+                return;
+            }
+
+            // 5. 更新畫面顯示
+            lblAddStatus.ForeColor = Color.Red;
+            lblAddStatus.Text = $"儲值：{addValue}　可用餘額：{newValue}";
+        }
+        #endregion
+
+        #region 消費功能
+        private void btnConsume_Click(object sender, EventArgs e)
+        {
+            lblConsumeStatus.Text = ""; // 清空舊訊息
+
+            // 1. 檢查輸入格式
+            if (!int.TryParse(txtConsumePoint.Text, out int consumeValue) || consumeValue <= 0)
+            {
+                MessageBox.Show("請輸入有效的消費點數！");
+                return;
+            }
+
+            byte keyType = 0x60; // KeyA
+            byte[] key = StringToByteArray("FFFFFFFFFFFF");
+
+            // 2. Step 1：讀取原本點數
+            int? oldValue = ReadValueBlock(keyType, key, 2, 8);
+            if (oldValue == null)
+            {
+                MessageBox.Show("讀取原始點數失敗！");
+                return;
+            }
+
+            // 3. 判斷餘額是否足夠
+            if (consumeValue > oldValue.Value)
+            {
+                MessageBox.Show("餘額不足，無法完成消費！");
+                return;
+            }
+
+            // 4. 計算新點數
+            int newValue = oldValue.Value - consumeValue;
+
+            // 5. Step 2：寫回 Value Block
+            bool ok = WriteValueBlock(2, 8, newValue, keyType, key);
+            if (!ok)
+            {
+                MessageBox.Show("消費失敗！");
+                return;
+            }
+
+            // 6. 結果顯示
+            lblConsumeStatus.Text = $"消費：{consumeValue}　可用餘額：{newValue}";
+        }
         #endregion
 
 

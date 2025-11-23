@@ -329,11 +329,11 @@
             // lblAddStatus
             // 
             this.lblAddStatus.AutoSize = true;
+            this.lblAddStatus.ForeColor = System.Drawing.Color.Red;
             this.lblAddStatus.Location = new System.Drawing.Point(26, 177);
             this.lblAddStatus.Name = "lblAddStatus";
-            this.lblAddStatus.Size = new System.Drawing.Size(109, 15);
+            this.lblAddStatus.Size = new System.Drawing.Size(0, 15);
             this.lblAddStatus.TabIndex = 19;
-            this.lblAddStatus.Text = "儲值: 可用餘額:";
             // 
             // btnAddValue
             // 
@@ -343,6 +343,7 @@
             this.btnAddValue.TabIndex = 18;
             this.btnAddValue.Text = "加值點數";
             this.btnAddValue.UseVisualStyleBackColor = true;
+            this.btnAddValue.Click += new System.EventHandler(this.btnAddValue_Click);
             // 
             // txtAddPoint
             // 
@@ -377,11 +378,11 @@
             // lblConsumeStatus
             // 
             this.lblConsumeStatus.AutoSize = true;
+            this.lblConsumeStatus.ForeColor = System.Drawing.Color.Red;
             this.lblConsumeStatus.Location = new System.Drawing.Point(22, 172);
             this.lblConsumeStatus.Name = "lblConsumeStatus";
-            this.lblConsumeStatus.Size = new System.Drawing.Size(109, 15);
+            this.lblConsumeStatus.Size = new System.Drawing.Size(0, 15);
             this.lblConsumeStatus.TabIndex = 23;
-            this.lblConsumeStatus.Text = "消費: 可用餘額:";
             // 
             // btnConsume
             // 
@@ -389,8 +390,9 @@
             this.btnConsume.Name = "btnConsume";
             this.btnConsume.Size = new System.Drawing.Size(95, 23);
             this.btnConsume.TabIndex = 22;
-            this.btnConsume.Text = "加值點數";
+            this.btnConsume.Text = "消費點數";
             this.btnConsume.UseVisualStyleBackColor = true;
+            this.btnConsume.Click += new System.EventHandler(this.btnConsume_Click);
             // 
             // txtConsumePoint
             // 
