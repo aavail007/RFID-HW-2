@@ -508,26 +508,41 @@ namespace WindowsFormsApplication6
                 return;
             }
 
-            // 3. 判斷餘額是否足夠
-            if (consumeValue > oldValue.Value)
+            int balance = oldValue.Value;
+            int autoAddAmount = 500;   // 每次自動加值點數
+            int autoAddCount = 0;       // 計算加值次數
+
+            // 3. 自動加值：直到餘額足夠
+            while (balance < consumeValue)
             {
-                MessageBox.Show("餘額不足，無法完成消費！");
-                return;
+                balance += autoAddAmount;
+                autoAddCount++;
             }
 
-            // 4. 計算新點數
-            int newValue = oldValue.Value - consumeValue;
+            // 4. 扣款
+            int newBalance = balance - consumeValue;
 
-            // 5. Step 2：寫回 Value Block
-            bool ok = WriteValueBlock(2, 8, newValue, keyType, key);
+            // 5. 寫回 Value Block
+            bool ok = WriteValueBlock(2, 8, newBalance, keyType, key);
             if (!ok)
             {
-                MessageBox.Show("消費失敗！");
+                MessageBox.Show("寫入 Value Block 失敗！");
                 return;
             }
 
-            // 6. 結果顯示
-            lblConsumeStatus.Text = $"消費：{consumeValue}　可用餘額：{newValue}";
+            // 6. 顯示結果
+            if (autoAddCount > 0)
+            {
+                lblConsumeStatus.Text =
+                    $"由於您的紅利點數不足，系統自動幫您加值！\r\n" +
+                    $"自動加值：{autoAddAmount} \t次數：{autoAddCount}\r\n" +
+                    $"消費：{consumeValue} \t可用餘額：{newBalance}";
+            }
+            else
+            {
+                lblConsumeStatus.Text =
+                    $"消費：{consumeValue} \t可用餘額：{newBalance}";
+            }
         }
         #endregion
 

@@ -126,9 +126,9 @@
             // 
             // btnClearCard
             // 
-            this.btnClearCard.Location = new System.Drawing.Point(283, 121);
+            this.btnClearCard.Location = new System.Drawing.Point(283, 108);
             this.btnClearCard.Name = "btnClearCard";
-            this.btnClearCard.Size = new System.Drawing.Size(95, 23);
+            this.btnClearCard.Size = new System.Drawing.Size(95, 34);
             this.btnClearCard.TabIndex = 9;
             this.btnClearCard.Text = "清空卡片";
             this.btnClearCard.UseVisualStyleBackColor = true;
@@ -136,9 +136,9 @@
             // 
             // btnMakeCard
             // 
-            this.btnMakeCard.Location = new System.Drawing.Point(283, 65);
+            this.btnMakeCard.Location = new System.Drawing.Point(283, 51);
             this.btnMakeCard.Name = "btnMakeCard";
-            this.btnMakeCard.Size = new System.Drawing.Size(95, 23);
+            this.btnMakeCard.Size = new System.Drawing.Size(95, 38);
             this.btnMakeCard.TabIndex = 8;
             this.btnMakeCard.Text = "卡片製作";
             this.btnMakeCard.UseVisualStyleBackColor = true;
@@ -240,9 +240,9 @@
             // 
             // btnReadCard
             // 
-            this.btnReadCard.Location = new System.Drawing.Point(281, 76);
+            this.btnReadCard.Location = new System.Drawing.Point(280, 67);
             this.btnReadCard.Name = "btnReadCard";
-            this.btnReadCard.Size = new System.Drawing.Size(95, 23);
+            this.btnReadCard.Size = new System.Drawing.Size(95, 34);
             this.btnReadCard.TabIndex = 17;
             this.btnReadCard.Text = "讀取卡片";
             this.btnReadCard.UseVisualStyleBackColor = true;
@@ -337,9 +337,9 @@
             // 
             // btnAddValue
             // 
-            this.btnAddValue.Location = new System.Drawing.Point(286, 96);
+            this.btnAddValue.Location = new System.Drawing.Point(287, 90);
             this.btnAddValue.Name = "btnAddValue";
-            this.btnAddValue.Size = new System.Drawing.Size(95, 23);
+            this.btnAddValue.Size = new System.Drawing.Size(95, 31);
             this.btnAddValue.TabIndex = 18;
             this.btnAddValue.Text = "加值點數";
             this.btnAddValue.UseVisualStyleBackColor = true;
@@ -386,9 +386,9 @@
             // 
             // btnConsume
             // 
-            this.btnConsume.Location = new System.Drawing.Point(282, 91);
+            this.btnConsume.Location = new System.Drawing.Point(282, 76);
             this.btnConsume.Name = "btnConsume";
-            this.btnConsume.Size = new System.Drawing.Size(95, 23);
+            this.btnConsume.Size = new System.Drawing.Size(95, 38);
             this.btnConsume.TabIndex = 22;
             this.btnConsume.Text = "消費點數";
             this.btnConsume.UseVisualStyleBackColor = true;
