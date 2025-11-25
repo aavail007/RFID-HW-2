@@ -25,6 +25,13 @@ namespace WindowsFormsApplication6
         const byte KEY_TYPE = 0x60; // Key A
         const string DEFAULT_PWD = "FFFFFFFFFFFF"; // 預設密碼
         const int DEPOSIT_AMOUNT = 500; // 每次自動儲值金額
+        const int DATA_BLOCK_SECTOR = 1; // Data block 寫入資料區塊所在的 Sector
+        const int ID_BLOCK = 0; // Data block 寫入會員編號所在的 Block
+        const int NAME_BLOCK = 1; // Data block 寫入姓名所在的 Block
+        const int DATE_BLOCK = 2; // Data block 寫入日期所在的 Block
+        const int VALUE_BLOCK_SECTOR = 2; // Value block 寫入點數所在的 Sector
+        const int POINT_BLOCK = 0; // Value block 寫入點數所在的 Block
+
 
         public Form1()
         {
@@ -72,20 +79,20 @@ namespace WindowsFormsApplication6
             byte[] key = StringToByteArray(DEFAULT_PWD);
 
             // 會員編號
-            if (!WriteBlock(keyType, key, 1, 4, EncodeStringTo16Bytes(txtMemberId.Text)))
+            if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, ID_BLOCK, EncodeStringTo16Bytes(txtMemberId.Text)))
                 return;
 
             // 姓名
-            if (!WriteBlock(keyType, key, 1, 5, EncodeStringTo16Bytes(txtName.Text)))
+            if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, NAME_BLOCK, EncodeStringTo16Bytes(txtName.Text)))
                 return;
 
             // 申請日期
-            if (!WriteBlock(keyType, key, 1, 6, EncodeStringTo16Bytes(txtDate.Text)))
+            if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, DATE_BLOCK, EncodeStringTo16Bytes(txtDate.Text)))
                 return;
 
             // 點數
             int point = int.Parse(txtPoint.Text);
-            if (!WriteValueBlock(2, 8, point, keyType, key))
+            if (!WriteValueBlock(VALUE_BLOCK_SECTOR, POINT_BLOCK, point, keyType, key))
                 return;
 
             ClearIssueUI();
@@ -100,23 +107,23 @@ namespace WindowsFormsApplication6
             byte keyType = KEY_TYPE;
             byte[] key = StringToByteArray(DEFAULT_PWD);
 
-            // 讀取會員編號：Sector 1, Block 4
-            string memberId = ReadBlock(keyType, key, 1, 4);
+            // 讀取會員編號
+            string memberId = ReadBlock(keyType, key, DATA_BLOCK_SECTOR, ID_BLOCK);
             if (memberId == null) return;
             txtQueryMemberId.Text = memberId;
 
-            // 讀取姓名：Sector 1, Block 5
-            string name = ReadBlock(keyType, key, 1, 5);
+            // 讀取姓名
+            string name = ReadBlock(keyType, key, DATA_BLOCK_SECTOR, NAME_BLOCK);
             if (name == null) return;
             txtQueryName.Text = name;
 
-            // 讀取申請日期：Sector 1, Block 6
-            string date = ReadBlock(keyType, key, 1, 6);
+            // 讀取申請日期
+            string date = ReadBlock(keyType, key, DATA_BLOCK_SECTOR, DATE_BLOCK);
             if (date == null) return;
             txtQueryDate.Text = date;
 
-            // 讀取 Value Block：Sector 2, Block 8
-            int? point = ReadValueBlock(keyType, key, 2, 8);
+            // 讀取 Value Block
+            int? point = ReadValueBlock(keyType, key, VALUE_BLOCK_SECTOR, POINT_BLOCK);
             if (point == null) return;
             txtQueryPoint.Text = point.ToString();
 
@@ -130,28 +137,28 @@ namespace WindowsFormsApplication6
             byte[] key = StringToByteArray(DEFAULT_PWD);
 
             // 1. 清空會員編號
-            if (!WriteBlock(keyType, key, 1, 4, EmptyBlock()))
+            if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, ID_BLOCK, EmptyBlock()))
             {
                 MessageBox.Show("清空會員編號失敗");
                 return;
             }
 
             // 2. 清空姓名
-            if (!WriteBlock(keyType, key, 1, 5, EmptyBlock()))
+            if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, NAME_BLOCK, EmptyBlock()))
             {
                 MessageBox.Show("清空姓名失敗");
                 return;
             }
 
             // 3. 清空申請日期
-            if (!WriteBlock(keyType, key, 1, 6, EmptyBlock()))
+            if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, DATE_BLOCK, EmptyBlock()))
             {
                 MessageBox.Show("清空日期失敗");
                 return;
             }
 
             // 4. 重置點數 Value Block（寫成 0）
-            if (!WriteValueBlock(2, 8, 0, keyType, key))
+            if (!WriteValueBlock(VALUE_BLOCK_SECTOR, POINT_BLOCK, 0, keyType, key))
             {
                 MessageBox.Show("清空點數失敗");
                 return;
@@ -168,7 +175,7 @@ namespace WindowsFormsApplication6
         {
             lblConsumeStatus.Text = ""; // 清空舊訊息
 
-            // 1. 檢查輸入格式
+            // 檢查輸入格式
             if (!int.TryParse(txtConsumePoint.Text, out int consumeValue) || consumeValue <= 0)
             {
                 MessageBox.Show("請輸入有效的消費點數！");
@@ -176,10 +183,10 @@ namespace WindowsFormsApplication6
             }
 
             byte keyType = KEY_TYPE;
-            byte[] key = StringToByteArray(DEFAULT_PWD);
+            byte[] key = StringToByteArray(DEFAULT_PWD);    
 
-            // 2. Step 1：讀取原本點數
-            int? oldValue = ReadValueBlock(keyType, key, 2, 8);
+            // 讀取原本點數
+            int? oldValue = ReadValueBlock(keyType, key, VALUE_BLOCK_SECTOR, POINT_BLOCK);
             if (oldValue == null)
             {
                 MessageBox.Show("讀取原始點數失敗！");
@@ -190,7 +197,7 @@ namespace WindowsFormsApplication6
             int autoAddAmount = DEPOSIT_AMOUNT;   // 每次自動加值點數
             int autoAddCount = 0;       // 計算加值次數
 
-            // 3. 自動加值：直到餘額足夠
+            // 自動加值：直到餘額足夠
             while (balance < consumeValue)
             {
                 balance += autoAddAmount;
@@ -201,7 +208,7 @@ namespace WindowsFormsApplication6
             int newBalance = balance - consumeValue;
 
             // 5. 寫回 Value Block
-            bool ok = WriteValueBlock(2, 8, newBalance, keyType, key);
+            bool ok = WriteValueBlock(VALUE_BLOCK_SECTOR, POINT_BLOCK, newBalance, keyType, key);
             if (!ok)
             {
                 MessageBox.Show("寫入 Value Block 失敗！");
@@ -232,7 +239,7 @@ namespace WindowsFormsApplication6
         {
             lblAddStatus.Text = ""; // 清空舊訊息
 
-            // 1. 檢查輸入格式
+            // 檢查輸入格式
             if (!int.TryParse(txtAddPoint.Text, out int addValue) || addValue <= 0)
             {
                 MessageBox.Show("請輸入有效的儲值點數！");
@@ -242,19 +249,19 @@ namespace WindowsFormsApplication6
             byte keyType = KEY_TYPE;
             byte[] key = StringToByteArray(DEFAULT_PWD);
 
-            // 2. Step 1：讀取原本點數
-            int? oldValue = ReadValueBlock(keyType, key, 2, 8);
+            // 讀取原本點數
+            int? oldValue = ReadValueBlock(keyType, key, VALUE_BLOCK_SECTOR, POINT_BLOCK);
             if (oldValue == null)
             {
                 MessageBox.Show("讀取原始點數失敗！");
                 return;
             }
 
-            // 3. 計算新點數
+            // 計算新點數
             int newValue = oldValue.Value + addValue;
 
-            // 4. Step 2：寫回 Value Block
-            bool ok = WriteValueBlock(2, 8, newValue, keyType, key);
+            // 寫回 Value Block
+            bool ok = WriteValueBlock(VALUE_BLOCK_SECTOR, POINT_BLOCK, newValue, keyType, key);
             if (!ok)
             {
                 MessageBox.Show("儲值失敗！");
@@ -354,12 +361,14 @@ namespace WindowsFormsApplication6
             byte[] buf = new byte[16];
             byte[] v = BitConverter.GetBytes(value); // 4 bytes (LSB first)
 
+            // 根據 MF1_S50_1K_V5.3 P8、P9 頁點數區必須採用 三份 Value + 一份 Address 的特殊格式
             // Value, Value(complement), Value, Address*4
             buf[0] = v[0];
             buf[1] = v[1];
             buf[2] = v[2];
             buf[3] = v[3];
 
+            // Value 的反碼
             buf[4] = (byte)~v[0];
             buf[5] = (byte)~v[1];
             buf[6] = (byte)~v[2];
