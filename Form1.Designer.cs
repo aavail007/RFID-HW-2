@@ -126,7 +126,7 @@
             // 
             // btnClearCard
             // 
-            this.btnClearCard.Location = new System.Drawing.Point(283, 108);
+            this.btnClearCard.Location = new System.Drawing.Point(282, 118);
             this.btnClearCard.Name = "btnClearCard";
             this.btnClearCard.Size = new System.Drawing.Size(95, 34);
             this.btnClearCard.TabIndex = 9;
@@ -136,7 +136,7 @@
             // 
             // btnMakeCard
             // 
-            this.btnMakeCard.Location = new System.Drawing.Point(283, 51);
+            this.btnMakeCard.Location = new System.Drawing.Point(282, 61);
             this.btnMakeCard.Name = "btnMakeCard";
             this.btnMakeCard.Size = new System.Drawing.Size(95, 38);
             this.btnMakeCard.TabIndex = 8;
@@ -146,7 +146,7 @@
             // 
             // txtPoint
             // 
-            this.txtPoint.Location = new System.Drawing.Point(102, 174);
+            this.txtPoint.Location = new System.Drawing.Point(101, 184);
             this.txtPoint.Name = "txtPoint";
             this.txtPoint.Size = new System.Drawing.Size(157, 25);
             this.txtPoint.TabIndex = 7;
@@ -155,7 +155,7 @@
             // lbl1Point
             // 
             this.lbl1Point.AutoSize = true;
-            this.lbl1Point.Location = new System.Drawing.Point(25, 184);
+            this.lbl1Point.Location = new System.Drawing.Point(24, 194);
             this.lbl1Point.Name = "lbl1Point";
             this.lbl1Point.Size = new System.Drawing.Size(41, 15);
             this.lbl1Point.TabIndex = 6;
@@ -163,7 +163,7 @@
             // 
             // txtDate
             // 
-            this.txtDate.Location = new System.Drawing.Point(102, 115);
+            this.txtDate.Location = new System.Drawing.Point(101, 125);
             this.txtDate.Name = "txtDate";
             this.txtDate.Size = new System.Drawing.Size(157, 25);
             this.txtDate.TabIndex = 5;
@@ -171,7 +171,7 @@
             // lbl1Date
             // 
             this.lbl1Date.AutoSize = true;
-            this.lbl1Date.Location = new System.Drawing.Point(25, 125);
+            this.lbl1Date.Location = new System.Drawing.Point(24, 135);
             this.lbl1Date.Name = "lbl1Date";
             this.lbl1Date.Size = new System.Drawing.Size(71, 15);
             this.lbl1Date.TabIndex = 4;
@@ -179,7 +179,7 @@
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(102, 63);
+            this.txtName.Location = new System.Drawing.Point(101, 73);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(157, 25);
             this.txtName.TabIndex = 3;
@@ -187,7 +187,7 @@
             // lbl1Name
             // 
             this.lbl1Name.AutoSize = true;
-            this.lbl1Name.Location = new System.Drawing.Point(25, 73);
+            this.lbl1Name.Location = new System.Drawing.Point(24, 83);
             this.lbl1Name.Name = "lbl1Name";
             this.lbl1Name.Size = new System.Drawing.Size(41, 15);
             this.lbl1Name.TabIndex = 2;
@@ -195,7 +195,7 @@
             // 
             // txtMemberId
             // 
-            this.txtMemberId.Location = new System.Drawing.Point(102, 20);
+            this.txtMemberId.Location = new System.Drawing.Point(101, 30);
             this.txtMemberId.Name = "txtMemberId";
             this.txtMemberId.Size = new System.Drawing.Size(157, 25);
             this.txtMemberId.TabIndex = 1;
@@ -203,7 +203,7 @@
             // lbl1MemberId
             // 
             this.lbl1MemberId.AutoSize = true;
-            this.lbl1MemberId.Location = new System.Drawing.Point(25, 30);
+            this.lbl1MemberId.Location = new System.Drawing.Point(24, 40);
             this.lbl1MemberId.Name = "lbl1MemberId";
             this.lbl1MemberId.Size = new System.Drawing.Size(71, 15);
             this.lbl1MemberId.TabIndex = 0;
@@ -240,9 +240,9 @@
             // 
             // btnReadCard
             // 
-            this.btnReadCard.Location = new System.Drawing.Point(280, 67);
+            this.btnReadCard.Location = new System.Drawing.Point(280, 65);
             this.btnReadCard.Name = "btnReadCard";
-            this.btnReadCard.Size = new System.Drawing.Size(95, 34);
+            this.btnReadCard.Size = new System.Drawing.Size(95, 38);
             this.btnReadCard.TabIndex = 17;
             this.btnReadCard.Text = "讀取卡片";
             this.btnReadCard.UseVisualStyleBackColor = true;
@@ -252,6 +252,7 @@
             // 
             this.txtQueryPoint.Location = new System.Drawing.Point(100, 185);
             this.txtQueryPoint.Name = "txtQueryPoint";
+            this.txtQueryPoint.ReadOnly = true;
             this.txtQueryPoint.Size = new System.Drawing.Size(157, 25);
             this.txtQueryPoint.TabIndex = 16;
             // 
@@ -268,6 +269,7 @@
             // 
             this.txtQueryDate.Location = new System.Drawing.Point(100, 126);
             this.txtQueryDate.Name = "txtQueryDate";
+            this.txtQueryDate.ReadOnly = true;
             this.txtQueryDate.Size = new System.Drawing.Size(157, 25);
             this.txtQueryDate.TabIndex = 14;
             // 
@@ -284,6 +286,7 @@
             // 
             this.txtQueryName.Location = new System.Drawing.Point(100, 74);
             this.txtQueryName.Name = "txtQueryName";
+            this.txtQueryName.ReadOnly = true;
             this.txtQueryName.Size = new System.Drawing.Size(157, 25);
             this.txtQueryName.TabIndex = 12;
             // 
@@ -300,6 +303,7 @@
             // 
             this.txtQueryMemberId.Location = new System.Drawing.Point(100, 31);
             this.txtQueryMemberId.Name = "txtQueryMemberId";
+            this.txtQueryMemberId.ReadOnly = true;
             this.txtQueryMemberId.Size = new System.Drawing.Size(157, 25);
             this.txtQueryMemberId.TabIndex = 10;
             // 
@@ -386,9 +390,9 @@
             // 
             // btnConsume
             // 
-            this.btnConsume.Location = new System.Drawing.Point(282, 76);
+            this.btnConsume.Location = new System.Drawing.Point(287, 90);
             this.btnConsume.Name = "btnConsume";
-            this.btnConsume.Size = new System.Drawing.Size(95, 38);
+            this.btnConsume.Size = new System.Drawing.Size(95, 29);
             this.btnConsume.TabIndex = 22;
             this.btnConsume.Text = "消費點數";
             this.btnConsume.UseVisualStyleBackColor = true;
@@ -396,7 +400,7 @@
             // 
             // txtConsumePoint
             // 
-            this.txtConsumePoint.Location = new System.Drawing.Point(99, 85);
+            this.txtConsumePoint.Location = new System.Drawing.Point(104, 90);
             this.txtConsumePoint.Name = "txtConsumePoint";
             this.txtConsumePoint.Size = new System.Drawing.Size(157, 25);
             this.txtConsumePoint.TabIndex = 21;
@@ -404,7 +408,7 @@
             // lblConsumePoint
             // 
             this.lblConsumePoint.AutoSize = true;
-            this.lblConsumePoint.Location = new System.Drawing.Point(22, 95);
+            this.lblConsumePoint.Location = new System.Drawing.Point(27, 100);
             this.lblConsumePoint.Name = "lblConsumePoint";
             this.lblConsumePoint.Size = new System.Drawing.Size(41, 15);
             this.lblConsumePoint.TabIndex = 20;
