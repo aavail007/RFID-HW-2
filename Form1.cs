@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Collections.Specialized.BitVector32;
 
@@ -24,15 +25,18 @@ namespace WindowsFormsApplication6
         const uint DEVICE_INDEX = 1; // 裝置索引
         const byte KEY_TYPE = 0x60; // Key A
         const string DEFAULT_PWD = "FFFFFFFFFFFF"; // 預設密碼
-        const int DEPOSIT_AMOUNT = 500; // 每次自動儲值金額
-        const int DATA_BLOCK_SECTOR = 1; // Data block 寫入資料區塊所在的 Sector
+        const int DEPOSIT_AMOUNT = 500; // 每次自動加值多少點數
+        const int DATA_BLOCK_SECTOR = 1; //一般 Data block 寫入資料區塊所在的 Sector
         const int ID_BLOCK = 0; // Data block 寫入會員編號所在的 Block
         const int NAME_BLOCK = 1; // Data block 寫入姓名所在的 Block
         const int DATE_BLOCK = 2; // Data block 寫入日期所在的 Block
-        const int VALUE_BLOCK_SECTOR = 2; // Value block 寫入點數所在的 Sector
+        const int VALUE_BLOCK_SECTOR = 2; //特殊 Value block 寫入點數所在的 Sector（專門存點數的區域）
         const int POINT_BLOCK = 0; // Value block 寫入點數所在的 Block
 
 
+        /// <summary>
+        /// Form 初始化
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
@@ -42,15 +46,30 @@ namespace WindowsFormsApplication6
         UInt32 dwResult, Index;
 
 
+        /// <summary>
+        /// Form 初始化
+        /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
-            initDateField();
-            initPointField();
+            initDateField();   // 啟動時自動帶入今日日期
+            initPointField();  // 啟動時設定點數欄位只能輸入數字
+        }
+
+        /// <summary>
+        /// 禁止 Enter 觸發按鈕，防止讀卡機刷完後又再次觸發按鈕
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         #region 初始化功能
         /// <summary>
-        /// 初始化日期欄位
+        /// 初始化日期欄位，自動帶入今天日期
         /// </summary>
         private void initDateField()
         {
@@ -62,10 +81,10 @@ namespace WindowsFormsApplication6
         /// </summary>
         private void initPointField()
         {
-            txtPoint.KeyPress += OnlyNumber;
-            txtQueryPoint.KeyPress += OnlyNumber;
-            txtAddPoint.KeyPress += OnlyNumber;
-            txtConsumePoint.KeyPress += OnlyNumber;
+            txtPoint.KeyPress += OnlyNumber; // 發卡點數欄位
+            txtQueryPoint.KeyPress += OnlyNumber; // 讀卡點數欄位
+            txtAddPoint.KeyPress += OnlyNumber; // 加值點數欄位
+            txtConsumePoint.KeyPress += OnlyNumber; // 消費點數欄位
         }
         #endregion
 
@@ -73,27 +92,48 @@ namespace WindowsFormsApplication6
         /// <summary>
         /// 製作卡片
         /// </summary>
-        private void btnMakeCard_Click(object sender, EventArgs e)
+        private async void btnMakeCard_Click(object sender, EventArgs e)
         {
+            // 檢查是否都有填寫
+            if (!CheckAllFieldsFilled())
+                return;
+
+            // 先在畫面提示使用者把卡片靠上去
+            lblIssueStatus.Text = "請將卡片放到讀卡機感應區...";
+            // 等待一秒，讓使用者不用在鼠標還停在點數輸入框中就要將卡片放在感應區，防止讀卡機將卡號寫到點數輸入框中
+            await Task.Delay(1000);
+
             byte keyType = KEY_TYPE;
             byte[] key = StringToByteArray(DEFAULT_PWD);
 
             // 會員編號
             if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, ID_BLOCK, EncodeStringTo16Bytes(txtMemberId.Text)))
+            {
+                lblIssueStatus.Text = "製作卡片失敗";
                 return;
+            }
 
             // 姓名
             if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, NAME_BLOCK, EncodeStringTo16Bytes(txtName.Text)))
+            {
+                lblIssueStatus.Text = "寫入姓名、申請日期、點數失敗";
                 return;
+            }
 
             // 申請日期
             if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, DATE_BLOCK, EncodeStringTo16Bytes(txtDate.Text)))
+            {
+                lblIssueStatus.Text = "寫入申請日期、點數失敗";
                 return;
+            }
 
             // 點數
             int point = int.Parse(txtPoint.Text);
             if (!WriteValueBlock(VALUE_BLOCK_SECTOR, POINT_BLOCK, point, keyType, key))
+            {
+                lblIssueStatus.Text = "寫入點數失敗";
                 return;
+            }
 
             ClearIssueUI();
             lblIssueStatus.Text = "寫入完成";
@@ -102,8 +142,13 @@ namespace WindowsFormsApplication6
         /// <summary>
         /// 讀取卡片
         /// </summary>
-        private void btnReadCard_Click(object sender, EventArgs e)
+        private async void btnReadCard_Click(object sender, EventArgs e)
         {
+            // 先在畫面提示使用者把卡片靠上去
+            lblQueryStatus.Text = "請將卡片放到讀卡機感應區...";
+            // 等待一秒，讓卡片有時間放到感應區
+            await Task.Delay(1000);
+
             byte keyType = KEY_TYPE;
             byte[] key = StringToByteArray(DEFAULT_PWD);
 
@@ -131,36 +176,45 @@ namespace WindowsFormsApplication6
             lblQueryStatus.Text = "讀取完成";
         }
 
-        private void btnClearCard_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 清空卡片
+        /// </summary>
+        private async void btnClearCard_Click(object sender, EventArgs e)
         {
+            // 先在畫面提示使用者把卡片靠上去
+            lblIssueStatus.Text = "請將卡片放到讀卡機感應區...";
+            // 等待一秒，讓卡片有時間放到感應區
+            await Task.Delay(1000);
+
             byte keyType = KEY_TYPE; // Key A
             byte[] key = StringToByteArray(DEFAULT_PWD);
 
-            // 1. 清空會員編號
+            // 清空會員編號
             if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, ID_BLOCK, EmptyBlock()))
             {
-                MessageBox.Show("清空會員編號失敗");
+                // 第一關即失敗，故提示整張卡片皆清空失敗
+                lblIssueStatus.Text = "清空卡片失敗";
                 return;
             }
 
-            // 2. 清空姓名
+            // 清空姓名
             if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, NAME_BLOCK, EmptyBlock()))
             {
-                MessageBox.Show("清空姓名失敗");
+                lblIssueStatus.Text = "清空姓名、申請日期、點數失敗";
                 return;
             }
 
-            // 3. 清空申請日期
+            // 清空申請日期
             if (!WriteBlock(keyType, key, DATA_BLOCK_SECTOR, DATE_BLOCK, EmptyBlock()))
             {
-                MessageBox.Show("清空日期失敗");
+                lblIssueStatus.Text = "清空申請日期、點數失敗";
                 return;
             }
 
-            // 4. 重置點數 Value Block（寫成 0）
+            // 重置點數 Value Block（寫成 0）
             if (!WriteValueBlock(VALUE_BLOCK_SECTOR, POINT_BLOCK, 0, keyType, key))
             {
-                MessageBox.Show("清空點數失敗");
+                lblIssueStatus.Text = "清空點數失敗";
                 return;
             }
             ClearIssueUI();
@@ -171,9 +225,15 @@ namespace WindowsFormsApplication6
         /// <summary>
         /// 消費點數
         /// </summary>
-        private void btnConsume_Click(object sender, EventArgs e)
+        private async void btnConsume_Click(object sender, EventArgs e)
         {
-            lblConsumeStatus.Text = ""; // 清空舊訊息
+            // 檢查是否都有填寫
+            if (!CheckAllFieldsFilled())
+                return;
+
+            lblConsumeStatus.Text = "請將卡片放到讀卡機感應區...";
+            // 等待一秒，讓卡片有時間放到感應區
+            await Task.Delay(1000);
 
             // 檢查輸入格式
             if (!int.TryParse(txtConsumePoint.Text, out int consumeValue) || consumeValue <= 0)
@@ -189,6 +249,7 @@ namespace WindowsFormsApplication6
             int? oldValue = ReadValueBlock(keyType, key, VALUE_BLOCK_SECTOR, POINT_BLOCK);
             if (oldValue == null)
             {
+                lblConsumeStatus.Text = "消費失敗！";
                 MessageBox.Show("讀取原始點數失敗！");
                 return;
             }
@@ -204,18 +265,19 @@ namespace WindowsFormsApplication6
                 autoAddCount++;
             }
 
-            // 4. 扣款
+            // 扣款
             int newBalance = balance - consumeValue;
 
-            // 5. 寫回 Value Block
+            // 寫回 Value Block
             bool ok = WriteValueBlock(VALUE_BLOCK_SECTOR, POINT_BLOCK, newBalance, keyType, key);
             if (!ok)
             {
+                lblConsumeStatus.Text = "消費失敗！";
                 MessageBox.Show("寫入 Value Block 失敗！");
                 return;
             }
 
-            // 6. 顯示結果
+            // 顯示結果
             if (autoAddCount > 0)
             {
                 lblConsumeStatus.Text =
@@ -231,13 +293,19 @@ namespace WindowsFormsApplication6
         }
 
         /// <summary>
-        /// 加值點數
+        /// 儲值點數
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnAddValue_Click(object sender, EventArgs e)
+        private async void btnAddValue_Click(object sender, EventArgs e)
         {
-            lblAddStatus.Text = ""; // 清空舊訊息
+            // 檢查是否都有填寫
+            if (!CheckAllFieldsFilled())
+                return;
+
+            lblAddStatus.Text = "請將卡片放到讀卡機感應區...";
+            // 等待一秒，讓卡片有時間放到感應區
+            await Task.Delay(1000);
 
             // 檢查輸入格式
             if (!int.TryParse(txtAddPoint.Text, out int addValue) || addValue <= 0)
@@ -253,6 +321,7 @@ namespace WindowsFormsApplication6
             int? oldValue = ReadValueBlock(keyType, key, VALUE_BLOCK_SECTOR, POINT_BLOCK);
             if (oldValue == null)
             {
+                lblAddStatus.Text = "儲值失敗！";
                 MessageBox.Show("讀取原始點數失敗！");
                 return;
             }
@@ -264,11 +333,12 @@ namespace WindowsFormsApplication6
             bool ok = WriteValueBlock(VALUE_BLOCK_SECTOR, POINT_BLOCK, newValue, keyType, key);
             if (!ok)
             {
-                MessageBox.Show("儲值失敗！");
+                lblAddStatus.Text = "儲值失敗！";
+                MessageBox.Show("寫入 Value Block 失敗！");
                 return;
             }
 
-            // 5. 更新畫面顯示
+            // 更新畫面顯示
             lblAddStatus.ForeColor = Color.Red;
             lblAddStatus.Text = $"儲值：{addValue}　可用餘額：{newValue}";
         }
@@ -489,7 +559,7 @@ namespace WindowsFormsApplication6
 
                 if (status != 0x00)
                 {
-                    MessageBox.Show("讀取 Value Block 失敗");
+                    // 讀取 Value Block 失敗;
                     return null;
                 }
 
@@ -582,7 +652,7 @@ namespace WindowsFormsApplication6
         }
         #endregion
 
-        #region 通用方法
+        #region 通用、防呆方法
         /// <summary>
         /// 將 12 碼 HEX 字串轉為 byte 陣列
         /// </summary>
@@ -602,7 +672,7 @@ namespace WindowsFormsApplication6
         }
 
         /// <summary>
-        /// 只能輸入數字
+        /// KeyPress event：限制只能輸入 0–9 與 Backspace
         /// </summary>
         private void OnlyNumber(object sender, KeyPressEventArgs e)
         {
@@ -625,6 +695,42 @@ namespace WindowsFormsApplication6
             if (!char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;   // 阻擋輸入
+            }
+        }
+
+        /// <summary>
+        /// 檢查是否都有填寫
+        /// </summary>
+        private bool CheckAllFieldsFilled()
+        {
+            switch (tabControl.SelectedTab.Name)
+            {
+                case "tabIssue":
+                    if (string.IsNullOrWhiteSpace(txtMemberId.Text) ||
+                        string.IsNullOrWhiteSpace(txtName.Text) ||
+                        string.IsNullOrWhiteSpace(txtDate.Text) ||
+                        string.IsNullOrWhiteSpace(txtPoint.Text))
+                    {
+                        MessageBox.Show("請填寫所有欄位！");
+                        return false;
+                    }
+                    return true;
+                case "tabDeposit":
+                    if (string.IsNullOrWhiteSpace(txtAddPoint.Text))
+                    {
+                        MessageBox.Show("請輸入加值點數！");
+                        return false;
+                    }
+                    return true;
+                case "tabConsume":
+                    if (string.IsNullOrWhiteSpace(txtConsumePoint.Text))
+                    {
+                        MessageBox.Show("請輸入消費點數！");
+                        return false;
+                    }
+                    return true;
+                default:
+                    return true;
             }
         }
 
